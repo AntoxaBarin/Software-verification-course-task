@@ -1,11 +1,14 @@
 ## Домашнее задание №2
 
 
-### Компиляция
+### Сборка
 ```bash
-g++ --coverage -fprofile-arcs -ftest-coverage -fno-exceptions -fno-inline -O0 main.cpp aho_corasick.cpp  -c main.o -lgcov
+make
+```
 
-g++ --coverage -fprofile-arcs -ftest-coverage -fno-exceptions -fno-inline -O0 main.o aho_corasick.o -o program -lgcov
+### Показ покрытия кода
+```bash
+make coverage
 ```
 
 ### Флаги компиляции
@@ -17,8 +20,3 @@ g++ --coverage -fprofile-arcs -ftest-coverage -fno-exceptions -fno-inline -O0 ma
 - `-fno-inline`: не инлайним функции.
 
 - `-fno-exceptions`: считаем, что функции не бросают исключений.
-
-### Запуск программы
-```bash
-./program
-```
