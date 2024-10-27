@@ -2,7 +2,7 @@
 
 namespace aho_corasick {
 
-void add_string_to_trie(Vertex* root, std::string& s) {
+void add_string_to_trie(Vertex* root, const std::string& s) {
     auto v = root;
     for (char c_ : s) {
         int c = static_cast<int>(c_ - 'a');
@@ -15,9 +15,9 @@ void add_string_to_trie(Vertex* root, std::string& s) {
     v->word = s;
 }
 
-Vertex* build_trie(std::vector<std::string>& words) {
+Vertex* build_trie(const std::vector<std::string>& words) {
     Vertex* root = new Vertex(-1, nullptr);
-    for (std::string& word: words) {
+    for (const std::string& word: words) {
         add_string_to_trie(root, word);
     }
     return root;
@@ -27,8 +27,9 @@ Vertex* go(Vertex* v, int c);
 
 Vertex* link(Vertex* root, Vertex* v) {
     if (!v->link) {
-        if (v == root || v->p == root)
+        if (v->p == root) {
             v->link = root;
+        }
         else {
             v->link = go(root, link(root, v->p), v->pch);
         }
@@ -38,20 +39,21 @@ Vertex* link(Vertex* root, Vertex* v) {
 
 Vertex* go(Vertex* root, Vertex* v, int c) {
     if (!v->go[c]) {
-        if (v->to[c]){
+        if (v->to[c]) {
             v->go[c] = v->to[c];
         }
-        else if (v == root){
+        else if (v == root) {
             v->go[c] = root;
         }
-        else{
+        else {
             v->go[c] = go(root, link(root, v), c);
         }
     }
     return v->go[c];
 }
 
-void search(Vertex* root, const std::string& text) {
+std::vector<std::string> search(Vertex* root, const std::string& text) {
+    std::vector<std::string> result = {};
     Vertex* current = root;
     for (size_t i = 0; i < text.size(); ++i) {
         int c = text[i] - 'a';
@@ -60,13 +62,12 @@ void search(Vertex* root, const std::string& text) {
         Vertex* temp = current;
         while (temp != root) {
             if (temp->is_terminal) {
-                std::cout << "Found substring: " << temp->word
-                          << " \tstart index: "  << (i - temp->word.size() + 1)
-                          << " \tend index: "    << i << std::endl;
+                result.push_back(temp->word);
             }
             temp = link(root, temp);
         }
     }
+    return result;
 }
 
 } // namespace aho_corasick
