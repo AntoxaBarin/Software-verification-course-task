@@ -20,3 +20,11 @@ make coverage
 - `-fno-inline`: не инлайним функции.
 
 - `-fno-exceptions`: считаем, что функции не бросают исключений.
+
+### MD/DC
+
+Компилятор clang умеет вычислять MC/DC.
+
+```bash
+make clang
+```

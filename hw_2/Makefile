@@ -1,3 +1,5 @@
+.PHONY: all clean coverage clang
+
 CXX = g++
 CXXFLAGS = -O0 --coverage -fprofile-arcs -ftest-coverage -fno-exceptions -fno-inline
 
@@ -8,17 +10,18 @@ all:
 	$(CXX) $(CXXFLAGS) main.o aho_corasick.o -o $(EXE)
 	./$(EXE)
 
+clang:
+	clang++ -O0 -fprofile-instr-generate -fcoverage-mapping -fcoverage-mcdc -c aho_corasick.cpp
+	clang++ -c main.cpp
+	clang++ -O0 -fprofile-instr-generate -fcoverage-mapping main.o aho_corasick.o -o program
+	LLVM_PROFILE_FILE="program.profraw" ./program
+	llvm-profdata merge -sparse program.profraw -o program.profdata
+	llvm-cov report -show-mcdc-summary ./program -instr-profile=program.profdata
+
+
 clean:
-	rm aho_corasick.gcno
-	rm aho_corasick.gcda
-	rm main.gcno
-	rm main.gcda
-	rm main.o
-	rm aho_corasick.o
-	rm $(EXE)
+	rm -rf *.gcno *.gcda *.o $(EXE) *.profdata *.profraw
 
 coverage:
 	gcovr -r .
 	gcovr -r . --branches
-
-.PHONY: clean all
