@@ -28,3 +28,13 @@ gradle test
 `StressTest` от Lincheck. Генерируется набор параллельных сценариев, в ходе которых исполняются методы `dequeue` и `enqueue`. Lincheck создает потоки, дожидается их готовности и одновременно запускает их на сценариях.
 
 Ожидается, что этот тест проверяет корректность (не lock-freedom) структуры данных.
+
+Тест исполняется порядка 10 секунд.
+
+#### Тест №2. MSQueueObstructionFreedomTest
+
+`checkObstructionFreedom` от Lincheck. Этот тест проверяет самую слабую форму общего прогресса системы (структуры данных) -- `obstruction-freedom`. 
+
+> Obstruction-freedom, when any operation is completed in a bounded number of steps if all the other threads pause.
+
+Тест исполняется порядка 40-50 секунд.
