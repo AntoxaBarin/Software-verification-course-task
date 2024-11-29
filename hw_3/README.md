@@ -38,3 +38,7 @@ gradle test
 > Obstruction-freedom, when any operation is completed in a bounded number of steps if all the other threads pause.
 
 Тест исполняется порядка 40-50 секунд.
+
+#### Тест №3. MSQueueSingleThreadTest
+
+Несколько юнит-тестов для всех методов класса `MSQueue`. Проверка корректной работы `enqueue`, `dequeue`. Во время тестирования был выявлен баг в реализации метода `isEmpty` -- сравнивались не объекты, на которые ссылаются `AtomicReference`, а сами ссылки. Очевидно, что ссылки разные, поэтому метод всегда выдавал `false`.

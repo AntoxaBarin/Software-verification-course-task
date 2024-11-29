@@ -11,7 +11,7 @@ class MSQueue {
     private var T = AtomicReference(dummy)
 
     fun isEmpty() : Boolean {
-        return H == T
+        return H.get() == T.get()
     }
 
     fun enqueue(data: Int) {
