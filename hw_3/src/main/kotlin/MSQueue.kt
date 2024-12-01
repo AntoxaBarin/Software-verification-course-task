@@ -1,3 +1,5 @@
+import java.util.*
+import java.util.Optional.empty
 import java.util.concurrent.atomic.AtomicReference
 
 class Node(value: Int, next: Node?) {
@@ -28,14 +30,14 @@ class MSQueue {
         }
     }
 
-    fun dequeue(): Int {
+    fun dequeue(): Optional<Int> {
         while (true) {
             val head = H.get()
             val tail = T.get()
             val headNext = H.get().N.get()
             if (head == tail) {
                 if (headNext == null) {
-                    throw NotImplementedError()
+                    return empty<Int>()
                 }
                 else {
                     T.compareAndSet(tail, headNext)
@@ -43,7 +45,7 @@ class MSQueue {
             }
             else {
                 if (H.compareAndSet(head, headNext)) {
-                    return headNext!!.Value
+                    return Optional.of<Int>(headNext!!.Value)
                 }
             }
         }

@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
+import java.util.*
 import kotlin.test.Test
 
 class MSQueueSingleThreadTest {
@@ -17,14 +18,14 @@ class MSQueueSingleThreadTest {
         q.enqueue(2)
         q.enqueue(3)
 
-        assertEquals(1, q.dequeue())
-        assertEquals(2, q.dequeue())
+        assertEquals(Optional.of<Int>(1), q.dequeue())
+        assertEquals(Optional.of<Int>(2), q.dequeue())
         assertEquals(false, q.isEmpty())
 
         q.enqueue(4)
 
-        assertEquals(3, q.dequeue())
-        assertEquals(4, q.dequeue())
+        assertEquals(Optional.of<Int>(3), q.dequeue())
+        assertEquals(Optional.of<Int>(4), q.dequeue())
         assertEquals(true, q.isEmpty())
     }
 
@@ -36,9 +37,7 @@ class MSQueueSingleThreadTest {
     }
 
     @Test
-    fun testEmptyDequeueError() {
-        assertThrows<NotImplementedError> {
-            q.dequeue()
-        }
+    fun testEmptyDequeue() {
+        assertEquals(Optional.empty<Int>(), q.dequeue())
     }
 }
